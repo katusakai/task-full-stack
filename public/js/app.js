@@ -1760,8 +1760,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['user']
+  props: ['user'],
+  filters: {
+    date: function date(value) {
+      var date = new Date(value);
+      return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+    }
+  }
 });
 
 /***/ }),
@@ -37096,11 +37120,18 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "user-card d-flex" }, [
-    _c("div", [_c("img", { attrs: { src: _vm.user.avatar, alt: "" } })]),
+  return _c("div", { staticClass: "user-card" }, [
+    _c("div", [
+      _c("img", {
+        staticClass: "user-image",
+        attrs: { src: _vm.user.avatar, alt: "" }
+      })
+    ]),
     _vm._v(" "),
     _c("div", { staticClass: "user-info-box" }, [
       _c("div", { staticClass: "user-card-text" }, [
+        _vm._m(0),
+        _vm._v(" "),
         _c("div", [
           _vm._v(
             "\n                    " +
@@ -37109,18 +37140,64 @@ var render = function() {
           )
         ]),
         _vm._v(" "),
+        _vm._m(1),
+        _vm._v(" "),
         _c("div", [
           _c("a", { attrs: { href: "mailto:" + _vm.user.email } }, [
             _vm._v(_vm._s(_vm.user.email))
           ])
-        ])
+        ]),
+        _vm._v(" "),
+        _vm._m(2),
+        _vm._v(" "),
+        _c(
+          "div",
+          { attrs: { "data-toggle": "tooltip", title: _vm.user.created_at } },
+          [
+            _vm._v(
+              "\n                    " +
+                _vm._s(_vm._f("date")(_vm.user.created_at)) +
+                "\n                "
+            )
+          ]
+        )
       ]),
       _vm._v(" "),
-      _vm._m(0)
+      _vm._m(3)
     ])
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("strong", [
+        _vm._v("\n                        Name:\n                    ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("strong", [
+        _vm._v("\n                        Email:\n                    ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("strong", [
+        _vm._v("\n                        Member since:\n                    ")
+      ])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

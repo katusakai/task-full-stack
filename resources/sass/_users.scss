@@ -1,12 +1,20 @@
+$small-breakpoint: 290px;
+
 .users {
 }
 
 .user-info-box {
   width: 100%;
+  margin: 5px;
 }
 .user-card {
+  display: flex;
   border: 1px solid $border-color;
   margin-bottom: 20px;
+  padding: 10px;
+  @media (max-width: $small-breakpoint) {
+    display: block;
+  }
 }
 
 .user-card-text {
@@ -18,5 +26,11 @@
 
 .user-buttons {
   display: flex;
-  justify-content: space-between
+  justify-content: space-between;
+}
+
+.user-image {
+  height: 128px;
+  width: 128px;
+  border-radius: 50%;
 }

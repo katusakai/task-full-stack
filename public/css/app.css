@@ -10646,11 +10646,20 @@ a.text-dark:focus {
 
 .user-info-box {
   width: 100%;
+  margin: 5px;
 }
 
 .user-card {
+  display: flex;
   border: 1px solid #dee2e6;
   margin-bottom: 20px;
+  padding: 10px;
+}
+
+@media (max-width: 290px) {
+  .user-card {
+    display: block;
+  }
 }
 
 .user-card-text {
@@ -10666,5 +10675,11 @@ a.text-dark:focus {
 .user-buttons {
   display: flex;
   justify-content: space-between;
+}
+
+.user-image {
+  height: 128px;
+  width: 128px;
+  border-radius: 50%;
 }
 
