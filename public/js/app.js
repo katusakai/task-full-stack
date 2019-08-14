@@ -1715,7 +1715,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      users: {}
+      users: {},
+      page: 1
     };
   },
   mounted: function mounted() {
@@ -1727,12 +1728,12 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
-    loadUsers: function loadUsers() {
+    loadUsers: function loadUsers(page) {
       var _this2 = this;
 
-      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.page;
       axios.get('/users' + '?page=' + page).then(function (response) {
         _this2.users = response.data.users;
+        _this2.page = page;
       });
     }
   }

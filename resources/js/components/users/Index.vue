@@ -18,6 +18,7 @@
         data: function() {
             return {
                 users: {},
+                page: 1
             }
         },
 
@@ -29,10 +30,11 @@
         },
 
         methods: {
-            loadUsers(page = this.page) {
+            loadUsers(page) {
                 axios.get('/users' + '?page=' + page)
                     .then(response => {
                         this.users = response.data.users;
+                        this.page = page;
                     })
             },
         }
