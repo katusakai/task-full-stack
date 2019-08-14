@@ -32,7 +32,9 @@
                 </div>
                 <div class="user-buttons">
                     <button class="btn btn-sm btn-primary">Update</button>
-                    <button class="btn btn-sm btn-danger">Delete</button>
+                    <button class="btn btn-sm btn-danger"
+                        @click="deleteUser(user.id)"
+                    >Delete</button>
                 </div>
             </div>
     </div>
@@ -47,6 +49,23 @@
             date: function (value) {
                 let date = new Date(value);
                 return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+            }
+        },
+
+        methods: {
+            deleteUser(user) {
+                if (confirm('are you sure?')) {
+                    axios.delete('/users/' + user)
+                        .then(response => {
+                            if(response.status === 200) {
+                                this.updateUsers()
+                            }
+                        })
+                }
+            },
+
+            updateUsers() {
+                this.$root.$emit('loadUsers')
             }
         }
     }

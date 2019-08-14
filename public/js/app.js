@@ -1719,15 +1719,20 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
+    var _this = this;
+
     this.loadUsers();
+    this.$root.$on('loadUsers', function () {
+      _this.loadUsers(_this.page);
+    });
   },
   methods: {
     loadUsers: function loadUsers() {
-      var _this = this;
+      var _this2 = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.page;
       axios.get('/users' + '?page=' + page).then(function (response) {
-        _this.users = response.data.users;
+        _this2.users = response.data.users;
       });
     }
   }
@@ -1784,12 +1789,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['user'],
   filters: {
     date: function date(value) {
       var date = new Date(value);
       return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+    }
+  },
+  methods: {
+    deleteUser: function deleteUser(user) {
+      var _this = this;
+
+      if (confirm('are you sure?')) {
+        axios["delete"]('/users/' + user).then(function (response) {
+          if (response.status === 200) {
+            _this.updateUsers();
+          }
+        });
+      }
+    },
+    updateUsers: function updateUsers() {
+      this.$root.$emit('loadUsers');
     }
   }
 });
@@ -38557,7 +38580,24 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
-      _vm._m(3)
+      _c("div", { staticClass: "user-buttons" }, [
+        _c("button", { staticClass: "btn btn-sm btn-primary" }, [
+          _vm._v("Update")
+        ]),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-sm btn-danger",
+            on: {
+              click: function($event) {
+                return _vm.deleteUser(_vm.user.id)
+              }
+            }
+          },
+          [_vm._v("Delete")]
+        )
+      ])
     ])
   ])
 }
@@ -38590,18 +38630,6 @@ var staticRenderFns = [
       _c("strong", [
         _vm._v("\n                        Member since:\n                    ")
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "user-buttons" }, [
-      _c("button", { staticClass: "btn btn-sm btn-primary" }, [
-        _vm._v("Update")
-      ]),
-      _vm._v(" "),
-      _c("button", { staticClass: "btn btn-sm btn-danger" }, [_vm._v("Delete")])
     ])
   }
 ]
@@ -50918,15 +50946,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!****************************************************!*\
   !*** ./resources/js/components/users/UserCard.vue ***!
   \****************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _UserCard_vue_vue_type_template_id_2b5d0866___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./UserCard.vue?vue&type=template&id=2b5d0866& */ "./resources/js/components/users/UserCard.vue?vue&type=template&id=2b5d0866&");
 /* harmony import */ var _UserCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./UserCard.vue?vue&type=script&lang=js& */ "./resources/js/components/users/UserCard.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _UserCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _UserCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -50956,7 +50983,7 @@ component.options.__file = "resources/js/components/users/UserCard.vue"
 /*!*****************************************************************************!*\
   !*** ./resources/js/components/users/UserCard.vue?vue&type=script&lang=js& ***!
   \*****************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

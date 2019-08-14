@@ -17,21 +17,24 @@
     export default {
         data: function() {
             return {
-                users: {}
+                users: {},
             }
         },
 
         mounted() {
             this.loadUsers();
+            this.$root.$on('loadUsers', () => {
+                this.loadUsers(this.page);
+            });
         },
 
         methods: {
             loadUsers(page = this.page) {
                 axios.get('/users' + '?page=' + page)
                     .then(response => {
-                        this.users = response.data.users
+                        this.users = response.data.users;
                     })
-            }
+            },
         }
     }
 </script>
