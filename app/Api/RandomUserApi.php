@@ -16,7 +16,7 @@ class RandomUserApi
     {
         $json = $this->json_decode();
 
-        $this->name = $json->name->first . '' . $json->name->last;
+        $this->name = ucfirst($json->name->first) . ' ' . ucfirst($json->name->last);
         $this->avatar = $json->picture->large;
         $this->email = $json->email;
     }
