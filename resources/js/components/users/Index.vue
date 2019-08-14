@@ -1,6 +1,10 @@
 <template>
-    <div>
-        {{users}}
+    <div class="row users">
+        <div class="col" v-for="user in users">
+            <user-card
+                    :user="user"
+            ></user-card>
+        </div>
     </div>
 </template>
 
@@ -20,7 +24,7 @@
             loadUsers() {
                 axios.get('/users')
                     .then(response => {
-                        this.users = response.data
+                        this.users = response.data.users
                     })
             }
         }

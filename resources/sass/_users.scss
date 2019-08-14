@@ -1,0 +1,22 @@
+.users {
+}
+
+.user-info-box {
+  width: 100%;
+}
+.user-card {
+  border: 1px solid $border-color;
+  margin-bottom: 20px;
+}
+
+.user-card-text {
+  display: block;
+  @media (max-width: 420px) {
+    word-break: break-all;
+  }
+}
+
+.user-buttons {
+  display: flex;
+  justify-content: space-between
+}

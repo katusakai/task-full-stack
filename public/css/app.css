@@ -10644,3 +10644,27 @@ a.text-dark:focus {
   }
 }
 
+.user-info-box {
+  width: 100%;
+}
+
+.user-card {
+  border: 1px solid #dee2e6;
+  margin-bottom: 20px;
+}
+
+.user-card-text {
+  display: block;
+}
+
+@media (max-width: 420px) {
+  .user-card-text {
+    word-break: break-all;
+  }
+}
+
+.user-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
