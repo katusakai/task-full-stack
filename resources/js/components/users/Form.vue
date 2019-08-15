@@ -14,16 +14,16 @@
                         <div class="form-group row">
                             <label for="form-name" class="col-sm-3 col-form-label">Name:</label>
                             <div class="col-sm-9">
-                                <input name="name" class="form-control" id="form-name" type="text" required
-                                       v-model="name"
+                                <input name="name" class="form-control" id="form-name" type="text" required max="50"
+                                       v-model="user.name"
                                 >
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="form-email" class="col-sm-3 col-form-label">Email:</label>
                             <div class="col-sm-9">
-                                <input name="email" class="form-control" id="form-email" type="text" required
-                                       v-model="email"
+                                <input name="email" class="form-control" id="form-email" type="email" required max="50"
+                                       v-model="user.email"
                                 >
                             </div>
                         </div>
@@ -48,20 +48,21 @@
 </template>
 
 <script>
+    import {eventBus} from "../../app.js";
     export default {
-        // props: [
-        //     'user'
-        // ],
 
         data() {
             return {
                 user: {},
-                name: '',
-                email: '',
-                avatar: '',
                 message: null,
-                fromsister: ''
             };
+        },
+
+        created() {
+            eventBus.$on('selectUser', (user) => {
+                this.user = user;
+                this.message = null;
+            });
         },
 
         methods: {
@@ -69,8 +70,8 @@
                 e.preventDefault();
                 let currentObj = this;
                 axios.put('/user/' + this.user.id, {
-                    name: this.name,
-                    email: this.email,
+                    name: this.user.name,
+                    email: this.user.email,
                     // avatar: this.avatar
                 })
                     .then(function () {

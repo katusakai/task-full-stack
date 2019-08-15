@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Validations\UserValidation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -68,9 +70,21 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $user, UserValidation $userValidation)
     {
-        //
+//        $request->validate($userValidation->text());
+
+//        $request->validate([
+//            'name' => 'required|max:50',
+//            'email' => 'required|max:50|unique:users|email'
+//        ]);
+
+        $userToUpdate = User::find($user);
+        $userToUpdate->name = $request->name;
+        $userToUpdate->email = $request->email;
+        $userToUpdate->save();
+
+        return response()->json([$request->all()]);
     }
 
     /**

@@ -1697,6 +1697,7 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _app_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../app.js */ "./resources/js/app.js");
 //
 //
 //
@@ -1746,27 +1747,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  // props: [
-  //     'user'
-  // ],
   data: function data() {
     return {
       user: {},
-      name: '',
-      email: '',
-      avatar: '',
-      message: null,
-      fromsister: ''
+      message: null
     };
+  },
+  created: function created() {
+    var _this = this;
+
+    _app_js__WEBPACK_IMPORTED_MODULE_0__["eventBus"].$on('selectUser', function (user) {
+      _this.user = user;
+      _this.message = null;
+    });
   },
   methods: {
     formSubmit: function formSubmit(e) {
       e.preventDefault();
       var currentObj = this;
       axios.put('/user/' + this.user.id, {
-        name: this.name,
-        email: this.email // avatar: this.avatar
+        name: this.user.name,
+        email: this.user.email // avatar: this.avatar
 
       }).then(function () {
         currentObj.message = "Profile was updated";
@@ -1893,6 +1896,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['user'],
@@ -1903,6 +1907,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    selectUser: function selectUser() {
+      _app_js__WEBPACK_IMPORTED_MODULE_0__["eventBus"].$emit('selectUser', this.user);
+    },
     deleteUser: function deleteUser(user) {
       var _this = this;
 
@@ -38631,8 +38638,8 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.name,
-                          expression: "name"
+                          value: _vm.user.name,
+                          expression: "user.name"
                         }
                       ],
                       staticClass: "form-control",
@@ -38640,15 +38647,16 @@ var render = function() {
                         name: "name",
                         id: "form-name",
                         type: "text",
-                        required: ""
+                        required: "",
+                        max: "50"
                       },
-                      domProps: { value: _vm.name },
+                      domProps: { value: _vm.user.name },
                       on: {
                         input: function($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.name = $event.target.value
+                          _vm.$set(_vm.user, "name", $event.target.value)
                         }
                       }
                     })
@@ -38671,24 +38679,25 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.email,
-                          expression: "email"
+                          value: _vm.user.email,
+                          expression: "user.email"
                         }
                       ],
                       staticClass: "form-control",
                       attrs: {
                         name: "email",
                         id: "form-email",
-                        type: "text",
-                        required: ""
+                        type: "email",
+                        required: "",
+                        max: "50"
                       },
-                      domProps: { value: _vm.email },
+                      domProps: { value: _vm.user.email },
                       on: {
                         input: function($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.email = $event.target.value
+                          _vm.$set(_vm.user, "email", $event.target.value)
                         }
                       }
                     })
@@ -38893,7 +38902,12 @@ var render = function() {
           "button",
           {
             staticClass: "btn btn-sm btn-primary",
-            attrs: { "data-toggle": "modal", "data-target": "#userFormModal" }
+            attrs: { "data-toggle": "modal", "data-target": "#userFormModal" },
+            on: {
+              click: function($event) {
+                return _vm.selectUser()
+              }
+            }
           },
           [_vm._v("Update")]
         ),

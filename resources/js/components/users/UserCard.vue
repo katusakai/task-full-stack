@@ -32,6 +32,7 @@
                 </div>
                 <div class="user-buttons">
                     <button class="btn btn-sm btn-primary"  data-toggle="modal" data-target="#userFormModal"
+                        @click="selectUser()"
                     >Update</button>
                     <button class="btn btn-sm btn-danger"
                         @click="deleteUser(user.id)"
@@ -55,6 +56,11 @@
         },
 
         methods: {
+
+            selectUser() {
+                eventBus.$emit('selectUser', this.user)
+            },
+
             deleteUser(user) {
                 if (confirm('are you sure?')) {
                     axios.delete('/user/' + user)
