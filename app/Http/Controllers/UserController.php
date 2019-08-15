@@ -83,9 +83,9 @@ class UserController extends Controller
 
         if($request->avatar)
         {
-            $image = $request->avatar;
-            $avatarName = time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-            Image::make($request->avatar)->fit(128, 128)->save(public_path('/uploads/avatars/').$avatarName);
+            $avatar = $request->avatar;
+            $avatarName = time().'.' . explode('/', explode(':', substr($avatar, 0, strpos($avatar, ';')))[1])[1];
+            Image::make($avatar)->fit(128, 128)->save(public_path('/uploads/avatars/').$avatarName);
             $userToUpdate->avatar = $avatarName;
             $responseText .= ' with avatar';
         }
