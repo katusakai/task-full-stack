@@ -1747,12 +1747,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       user: {},
-      message: null
+      message: null,
+      uploadingAvatar: false
     };
   },
   created: function created() {
@@ -1767,19 +1772,54 @@ __webpack_require__.r(__webpack_exports__);
     formSubmit: function formSubmit(e) {
       e.preventDefault();
       var currentObj = this;
-      axios.put('/user/' + this.user.id, {
-        name: this.user.name,
-        email: this.user.email // avatar: this.avatar
 
-      }).then(function () {
-        currentObj.message = "Profile was updated";
-      })["catch"](function (error) {
-        currentObj.message = error;
-      });
+      if (this.uploadingAvatar) {
+        this.updateWithAvatar(currentObj);
+      } else {
+        this.updateWithoutAvatar(currentObj);
+      }
+
       this.updateUser();
     },
     updateUser: function updateUser() {
       this.$root.$emit('loadUsers');
+    },
+    onAvatarChange: function onAvatarChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length) return;
+      this.createAvatar(files[0]);
+    },
+    createAvatar: function createAvatar(file) {
+      var reader = new FileReader();
+      var vm = this;
+
+      reader.onload = function (e) {
+        vm.user.avatar = e.target.result;
+      };
+
+      reader.readAsDataURL(file);
+      this.uploadingAvatar = !this.uploadingAvatar;
+    },
+    updateWithAvatar: function updateWithAvatar(currentObj) {
+      axios.put('/user/' + this.user.id, {
+        name: this.user.name,
+        email: this.user.email,
+        avatar: this.user.avatar
+      }).then(function (response) {
+        currentObj.message = response.data.success;
+      })["catch"](function (error) {
+        currentObj.message = error;
+      });
+    },
+    updateWithoutAvatar: function updateWithoutAvatar(currentObj) {
+      axios.put('/user/' + this.user.id, {
+        name: this.user.name,
+        email: this.user.email
+      }).then(function (response) {
+        currentObj.message = response.data.success;
+      })["catch"](function (error) {
+        currentObj.message = error;
+      });
     }
   }
 });
@@ -38704,7 +38744,40 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm._m(1),
+                _c("div", { staticClass: "form-group row" }, [
+                  _c(
+                    "label",
+                    {
+                      staticClass: "col-sm-3 col-form-label",
+                      attrs: { for: "form-avatar" }
+                    },
+                    [_vm._v("Avatar:")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-9" }, [
+                    _c("input", {
+                      attrs: {
+                        name: "avatar",
+                        id: "form-avatar",
+                        type: "file"
+                      },
+                      on: { change: _vm.onAvatarChange }
+                    }),
+                    _vm._v(" "),
+                    _vm.user.avatar
+                      ? _c("div", [
+                          _c("img", {
+                            staticClass: "img-responsive",
+                            attrs: {
+                              src: _vm.user.avatar,
+                              height: "128",
+                              width: "128"
+                            }
+                          })
+                        ])
+                      : _vm._e()
+                  ])
+                ]),
                 _vm._v(" "),
                 _c("button", { staticClass: "btn btn-success" }, [
                   _vm._v("Update")
@@ -38753,27 +38826,6 @@ var staticRenderFns = [
         },
         [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
       )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group row" }, [
-      _c(
-        "label",
-        {
-          staticClass: "col-sm-3 col-form-label",
-          attrs: { for: "form-avatar" }
-        },
-        [_vm._v("Avatar:")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-9" }, [
-        _c("input", {
-          attrs: { name: "avatar", id: "form-avatar", type: "file" }
-        })
-      ])
     ])
   }
 ]

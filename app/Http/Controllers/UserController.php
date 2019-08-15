@@ -6,6 +6,7 @@ use App\User;
 use App\Validations\UserValidation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
 
 class UserController extends Controller
 {
@@ -72,14 +73,26 @@ class UserController extends Controller
      */
     public function update(Request $request, $user, UserValidation $userValidation)
     {
+        $responseText = 'Profile updated';
+
         $request->validate($userValidation->text());
 
         $userToUpdate = User::find($user);
         $userToUpdate->name = $request->name;
         $userToUpdate->email = $request->email;
+
+        if($request->avatar)
+        {
+            $image = $request->avatar;
+            $avatarName = time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+            Image::make($request->avatar)->fit(128, 128)->save(public_path('/uploads/avatars/').$avatarName);
+            $userToUpdate->avatar = $avatarName;
+            $responseText .= ' with avatar';
+        }
+
         $userToUpdate->save();
 
-        return response()->json([$request->all()]);
+        return response()->json(['success' => $responseText], 200);
     }
 
     /**

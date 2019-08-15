@@ -31,7 +31,11 @@
                             <label for="form-avatar" class="col-sm-3 col-form-label">Avatar:</label>
                             <div class="col-sm-9">
                                 <input name="avatar" id="form-avatar" type="file"
+                                    v-on:change="onAvatarChange"
                                 >
+                                <div v-if="user.avatar">
+                                    <img :src="user.avatar" class="img-responsive" height="128" width="128">
+                                </div>
                             </div>
                         </div>
                         <button class="btn btn-success">Update</button>
@@ -55,6 +59,7 @@
             return {
                 user: {},
                 message: null,
+                uploadingAvatar: false,
             };
         },
 
@@ -69,23 +74,61 @@
             formSubmit(e) {
                 e.preventDefault();
                 let currentObj = this;
-                axios.put('/user/' + this.user.id, {
-                    name: this.user.name,
-                    email: this.user.email,
-                    // avatar: this.avatar
-                })
-                    .then(function () {
-                        currentObj.message = "Profile was updated";
-                    })
-                    .catch(function (error) {
-                        currentObj.message = error;
-                    });
+                if(this.uploadingAvatar) {
+                    this.updateWithAvatar(currentObj);
+                } else {
+                    this.updateWithoutAvatar(currentObj);
+                }
                 this.updateUser();
             },
 
             updateUser() {
                 this.$root.$emit('loadUsers')
             },
+
+            onAvatarChange(e) {
+                let files = e.target.files || e.dataTransfer.files;
+                if (!files.length)
+                    return;
+                this.createAvatar(files[0]);
+            },
+
+            createAvatar(file) {
+                let reader = new FileReader();
+                let vm = this;
+                reader.onload = (e) => {
+                    vm.user.avatar = e.target.result;
+                };
+                reader.readAsDataURL(file);
+                this.uploadingAvatar = !this.uploadingAvatar;
+            },
+
+            updateWithAvatar(currentObj) {
+                axios.put('/user/' + this.user.id, {
+                    name: this.user.name,
+                    email: this.user.email,
+                    avatar: this.user.avatar
+                })
+                    .then(function (response) {
+                        currentObj.message = response.data.success;
+                    })
+                    .catch(function (error) {
+                        currentObj.message = error;
+                    });
+            },
+
+            updateWithoutAvatar(currentObj) {
+                axios.put('/user/' + this.user.id, {
+                    name: this.user.name,
+                    email: this.user.email,
+                })
+                    .then(function (response) {
+                        currentObj.message = response.data.success;
+                    })
+                    .catch(function (error) {
+                        currentObj.message = error;
+                    });
+            }
         }
 
     }
