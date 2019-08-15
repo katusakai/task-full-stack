@@ -10,7 +10,7 @@ class UserValidation
     {
         $validatedData = [
             'name' => 'required|max:50',
-            'email' => 'required|max:50|unique:users|email'
+            'email' => 'required|max:50|email'
         ];
 
         return $validatedData;

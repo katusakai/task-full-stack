@@ -72,12 +72,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $user, UserValidation $userValidation)
     {
-//        $request->validate($userValidation->text());
-
-//        $request->validate([
-//            'name' => 'required|max:50',
-//            'email' => 'required|max:50|unique:users|email'
-//        ]);
+        $request->validate($userValidation->text());
 
         $userToUpdate = User::find($user);
         $userToUpdate->name = $request->name;
