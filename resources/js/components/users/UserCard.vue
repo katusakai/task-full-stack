@@ -31,7 +31,8 @@
                     </div>
                 </div>
                 <div class="user-buttons">
-                    <button class="btn btn-sm btn-primary">Update</button>
+                    <button class="btn btn-sm btn-primary"  data-toggle="modal" data-target="#userFormModal"
+                    >Update</button>
                     <button class="btn btn-sm btn-danger"
                         @click="deleteUser(user.id)"
                     >Delete</button>
@@ -41,6 +42,7 @@
 </template>
 
 <script>
+    import {eventBus} from "../../app.js";
     export default {
         props: [
             'user'
@@ -55,7 +57,7 @@
         methods: {
             deleteUser(user) {
                 if (confirm('are you sure?')) {
-                    axios.delete('/users/' + user)
+                    axios.delete('/user/' + user)
                         .then(response => {
                             if(response.status === 200) {
                                 this.updateUsers()

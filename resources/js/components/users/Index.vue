@@ -10,6 +10,7 @@
                 ></user-card>
             </div>
         </div>
+        <user-form></user-form>
     </div>
 </template>
 
@@ -18,7 +19,7 @@
         data: function() {
             return {
                 users: {},
-                page: 1
+                page: 1,
             }
         },
 
@@ -31,12 +32,17 @@
 
         methods: {
             loadUsers(page) {
-                axios.get('/users' + '?page=' + page)
+                axios.get('/user' + '?page=' + page)
                     .then(response => {
                         this.users = response.data.users;
                         this.page = page;
                     })
             },
+
+
+            selectUser() {
+                this.user = this.$root.$emit('selectUser')
+            }
         }
     }
 </script>

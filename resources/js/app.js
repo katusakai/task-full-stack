@@ -21,9 +21,12 @@ window.Vue = require('vue');
 
 Vue.component('users-index', require('./components/users/Index').default);
 Vue.component('user-card', require('./components/users/UserCard').default);
+Vue.component('user-form', require('./components/users/Form').default);
 
 
 Vue.component('pagination', require('laravel-vue-pagination'));
+
+export const eventBus = new Vue();
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

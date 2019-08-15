@@ -10683,3 +10683,7 @@ a.text-dark:focus {
   border-radius: 50%;
 }
 
+.col-form-label {
+  font-weight: bold;
+}
+
