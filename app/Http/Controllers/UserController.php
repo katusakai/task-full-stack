@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Aggregators\Users;
 use App\User;
 use App\Validations\UserValidation;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 
 class UserController extends Controller
@@ -15,9 +15,9 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Users $users)
     {
-        $users = User::orderBy('created_at', 'desc')->paginate(15);
+        $users = $users->get(15);
         return response()->json(compact('users'));
     }
 
