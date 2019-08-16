@@ -1753,6 +1753,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['ifCreating'],
   data: function data() {
     return {
       user: {},
@@ -1773,10 +1774,14 @@ __webpack_require__.r(__webpack_exports__);
       e.preventDefault();
       var currentObj = this;
 
-      if (this.uploadingAvatar) {
-        this.updateWithAvatar(currentObj);
+      if (this.ifCreating) {
+        this.createUser(currentObj);
       } else {
-        this.updateWithoutAvatar(currentObj);
+        if (this.uploadingAvatar) {
+          this.updateWithAvatar(currentObj);
+        } else {
+          this.updateWithoutAvatar(currentObj);
+        }
       }
 
       this.updateUser();
@@ -1801,20 +1806,33 @@ __webpack_require__.r(__webpack_exports__);
       this.uploadingAvatar = !this.uploadingAvatar;
     },
     updateWithAvatar: function updateWithAvatar(currentObj) {
-      axios.put('/user/' + this.user.id, {
+      axios.put('/users/' + this.user.id, {
         name: this.user.name,
         email: this.user.email,
         avatar: this.user.avatar
+      }).then(function (response) {
+        currentObj.message = response.data.success;
+        console.log(response.data.success);
+      })["catch"](function (error) {
+        currentObj.message = error;
+        console.log(error);
+      });
+    },
+    updateWithoutAvatar: function updateWithoutAvatar(currentObj) {
+      axios.put('/users/' + this.user.id, {
+        name: this.user.name,
+        email: this.user.email
       }).then(function (response) {
         currentObj.message = response.data.success;
       })["catch"](function (error) {
         currentObj.message = error;
       });
     },
-    updateWithoutAvatar: function updateWithoutAvatar(currentObj) {
-      axios.put('/user/' + this.user.id, {
+    createUser: function createUser(currentObj) {
+      axios.post('/users/', {
         name: this.user.name,
-        email: this.user.email
+        email: this.user.email,
+        avatar: this.user.avatar
       }).then(function (response) {
         currentObj.message = response.data.success;
       })["catch"](function (error) {
@@ -1851,11 +1869,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       users: {},
-      page: 1
+      page: 1,
+      ifCreating: false
     };
   },
   mounted: function mounted() {
@@ -1870,13 +1907,16 @@ __webpack_require__.r(__webpack_exports__);
     loadUsers: function loadUsers(page) {
       var _this2 = this;
 
-      axios.get('/user' + '?page=' + page).then(function (response) {
+      axios.get('/users' + '?page=' + page).then(function (response) {
         _this2.users = response.data.users;
         _this2.page = page;
       });
     },
     selectUser: function selectUser() {
       this.user = this.$root.$emit('selectUser');
+    },
+    userCreateForm: function userCreateForm() {
+      this.ifCreating = !this.ifCreating;
     }
   }
 });
@@ -1954,7 +1994,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       if (confirm('are you sure?')) {
-        axios["delete"]('/user/' + user).then(function (response) {
+        axios["delete"]('/users/' + user).then(function (response) {
           if (response.status === 200) {
             _this.updateUsers();
           }
@@ -38853,17 +38893,42 @@ var render = function() {
   return _c(
     "div",
     [
-      _c(
-        "div",
-        { staticClass: "table-responsive d-flex justify-content-center" },
-        [
-          _c("pagination", {
-            attrs: { data: _vm.users, "show-disabled": true },
-            on: { "pagination-change-page": _vm.loadUsers }
-          })
-        ],
-        1
-      ),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-2" }, [
+          _c("button", { staticClass: "btn btn-secondary" }, [
+            _vm._v("Random")
+          ]),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-warning",
+              attrs: {
+                "data-toggle": "modal",
+                "data-target": "#userFormModal"
+              },
+              on: { click: _vm.userCreateForm }
+            },
+            [_vm._v("Create")]
+          )
+        ]),
+        _vm._v(" "),
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-7" }, [
+          _c(
+            "div",
+            { staticClass: "table-responsive d-flex justify-content-center" },
+            [
+              _c("pagination", {
+                attrs: { data: _vm.users, "show-disabled": true },
+                on: { "pagination-change-page": _vm.loadUsers }
+              })
+            ],
+            1
+          )
+        ])
+      ]),
       _vm._v(" "),
       _c(
         "div",
@@ -38879,12 +38944,39 @@ var render = function() {
         0
       ),
       _vm._v(" "),
-      _c("user-form")
+      _c("user-form", { attrs: { ifCreating: _vm.ifCreating } })
     ],
     1
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-3" }, [
+      _c("form", { staticClass: "form-inline" }, [
+        _c("input", {
+          staticClass: "form-control mr-sm-1",
+          attrs: {
+            type: "search",
+            placeholder: "Search",
+            "aria-label": "Search"
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-outline-success my-2 my-sm-0",
+            attrs: { type: "submit" }
+          },
+          [_vm._v("Search")]
+        )
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 

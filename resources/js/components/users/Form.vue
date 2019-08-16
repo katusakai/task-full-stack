@@ -54,6 +54,9 @@
 <script>
     import {eventBus} from "../../app.js";
     export default {
+        props: [
+            'ifCreating',
+        ],
 
         data() {
             return {
@@ -74,10 +77,14 @@
             formSubmit(e) {
                 e.preventDefault();
                 let currentObj = this;
-                if(this.uploadingAvatar) {
-                    this.updateWithAvatar(currentObj);
+                if (this.ifCreating) {
+                    this.createUser(currentObj);
                 } else {
-                    this.updateWithoutAvatar(currentObj);
+                    if(this.uploadingAvatar) {
+                        this.updateWithAvatar(currentObj);
+                    } else {
+                        this.updateWithoutAvatar(currentObj);
+                    }
                 }
                 this.updateUser();
             },
@@ -104,10 +111,25 @@
             },
 
             updateWithAvatar(currentObj) {
-                axios.put('/user/' + this.user.id, {
+                axios.put('/users/' + this.user.id, {
                     name: this.user.name,
                     email: this.user.email,
                     avatar: this.user.avatar
+                })
+                    .then(function (response) {
+                        currentObj.message = response.data.success;
+                        console.log(response.data.success);
+                    })
+                    .catch(function (error) {
+                        currentObj.message = error;
+                        console.log(error);
+                    });
+            },
+
+            updateWithoutAvatar(currentObj) {
+                axios.put('/users/' + this.user.id, {
+                    name: this.user.name,
+                    email: this.user.email,
                 })
                     .then(function (response) {
                         currentObj.message = response.data.success;
@@ -117,10 +139,11 @@
                     });
             },
 
-            updateWithoutAvatar(currentObj) {
-                axios.put('/user/' + this.user.id, {
+            createUser(currentObj) {
+                axios.post('/users/', {
                     name: this.user.name,
                     email: this.user.email,
+                    avatar: this.user.avatar,
                 })
                     .then(function (response) {
                         currentObj.message = response.data.success;

@@ -4,6 +4,7 @@
 namespace App\Helpers;
 
 
+use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
 class Avatar
@@ -21,7 +22,7 @@ class Avatar
     public function upload($request)
     {
         $image = $request;
-        $this->name = time() . strstr($image->getClientOriginalName(), '.');
+        $this->name = time() . Str::random(10) . '.jpg';
         Image::make($image)->fit(128, 128)->save(public_path('/uploads/avatars/').$this->name);
     }
 

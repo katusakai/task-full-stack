@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 <div class="user-buttons">
-                    <button class="btn btn-sm btn-primary"  data-toggle="modal" data-target="#userFormModal"
+                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#userFormModal"
                         @click="selectUser()"
                     >Update</button>
                     <button class="btn btn-sm btn-danger"
@@ -63,7 +63,7 @@
 
             deleteUser(user) {
                 if (confirm('are you sure?')) {
-                    axios.delete('/user/' + user)
+                    axios.delete('/users/' + user)
                         .then(response => {
                             if(response.status === 200) {
                                 this.updateUsers()

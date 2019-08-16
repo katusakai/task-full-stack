@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Aggregators\Users;
+use App\Helpers\Avatar;
 use App\User;
 use App\Validations\UserValidation;
 use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -37,9 +39,26 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, UserValidation $userValidation)
     {
-        //
+        $request->validate($userValidation->text());
+
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $password = Str::random(15);
+        $user->password = Hash::make($password);
+
+        $avatar = new Avatar();
+        $avatar->upload($request->avatar);
+        $user->avatar = $avatar->getName();
+
+        $user->save();
+
+        $responseText = "Profile was created. Password is: $password";
+
+
+        return response()->json(['success' => $responseText], 200);
     }
 
     /**
@@ -83,10 +102,9 @@ class UserController extends Controller
 
         if($request->avatar)
         {
-            $avatar = $request->avatar;
-            $avatarName = time().'.' . explode('/', explode(':', substr($avatar, 0, strpos($avatar, ';')))[1])[1];
-            Image::make($avatar)->fit(128, 128)->save(public_path('/uploads/avatars/').$avatarName);
-            $userToUpdate->avatar = $avatarName;
+            $avatar = new Avatar();
+            $avatar->upload($request->avatar);
+            $userToUpdate->avatar = $avatar->getName();
             $responseText .= ' with avatar';
         }
 
