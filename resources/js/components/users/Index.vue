@@ -1,26 +1,29 @@
 <template>
     <div>
-        <div class="row">
-            <div class="col-md-2">
-                <button class="btn btn-secondary"
-                    @click="createRandomUser"
-                >Random</button>
-                <button class="btn btn-warning" data-toggle="modal" data-target="#userFormModal"
-                    @click="userCreateForm"
-                >Create</button>
+        <div class="users-menu-display-type">
+            <div class="users-menu-mb">
+                <div class="d-flex justify-content-between">
+                    <button class="btn btn-secondary mr-sm-1"
+                            @click="createRandomUser"
+                    >Random</button>
+                    <button class="btn btn-warning mr-sm-1" data-toggle="modal" data-target="#userFormModal"
+                            @click="userCreateForm"
+                    >Create</button>
+                </div>
             </div>
-            <div class="col-md-3">
-                <input class="form-control mr-sm-1" type="search" placeholder="Search" aria-label="Search"
-                    v-model="searchInput"
-                    @keyup="search"
-                    @blur="search"
+            <div class="users-menu-display-type">
+                <input class="form-control mr-sm-1 users-menu-mb" type="search" placeholder="Search" aria-label="Search"
+                       v-model="searchInput"
+                       @keyup="search"
+                       @blur="search"
 
                 >
-            </div>
-            <div class="col-md-7">
-                <div class="table-responsive d-flex justify-content-center">
-                    <pagination :data="users" :show-disabled="true" @pagination-change-page="loadUsers"></pagination>
-                </div>
+                <pagination
+                        :data="users"
+                        :show-disabled="true"
+                        :limit="1"
+                        @pagination-change-page="loadUsers">
+                </pagination>
             </div>
         </div>
         <div class="row users">
@@ -80,7 +83,7 @@
             },
 
             search() {
-                this.loadUsers(this.page);
+                this.loadUsers();
             }
         }
     }

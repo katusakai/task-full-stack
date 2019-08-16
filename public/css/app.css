@@ -10687,3 +10687,20 @@ a.text-dark:focus {
   font-weight: bold;
 }
 
+.users-menu-display-type {
+  display: flex;
+  width: 100%;
+}
+
+@media (max-width: 575px) {
+  .users-menu-display-type {
+    display: block;
+  }
+}
+
+@media (max-width: 575px) {
+  .users-menu-mb {
+    margin-bottom: 10px;
+  }
+}
+

@@ -1911,6 +1911,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -1953,7 +1956,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     search: function search() {
-      this.loadUsers(this.page);
+      this.loadUsers();
     }
   }
 });
@@ -38933,74 +38936,72 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-md-2" }, [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-secondary",
-              on: { click: _vm.createRandomUser }
-            },
-            [_vm._v("Random")]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-warning",
-              attrs: {
-                "data-toggle": "modal",
-                "data-target": "#userFormModal"
-              },
-              on: { click: _vm.userCreateForm }
-            },
-            [_vm._v("Create")]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-md-3" }, [
-          _c("input", {
-            directives: [
+      _c("div", { staticClass: "users-menu-display-type" }, [
+        _c("div", { staticClass: "users-menu-mb" }, [
+          _c("div", { staticClass: "d-flex justify-content-between" }, [
+            _c(
+              "button",
               {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.searchInput,
-                expression: "searchInput"
-              }
-            ],
-            staticClass: "form-control mr-sm-1",
-            attrs: {
-              type: "search",
-              placeholder: "Search",
-              "aria-label": "Search"
-            },
-            domProps: { value: _vm.searchInput },
-            on: {
-              keyup: _vm.search,
-              blur: _vm.search,
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.searchInput = $event.target.value
-              }
-            }
-          })
+                staticClass: "btn btn-secondary mr-sm-1",
+                on: { click: _vm.createRandomUser }
+              },
+              [_vm._v("Random")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-warning mr-sm-1",
+                attrs: {
+                  "data-toggle": "modal",
+                  "data-target": "#userFormModal"
+                },
+                on: { click: _vm.userCreateForm }
+              },
+              [_vm._v("Create")]
+            )
+          ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "col-md-7" }, [
-          _c(
-            "div",
-            { staticClass: "table-responsive d-flex justify-content-center" },
-            [
-              _c("pagination", {
-                attrs: { data: _vm.users, "show-disabled": true },
-                on: { "pagination-change-page": _vm.loadUsers }
-              })
-            ],
-            1
-          )
-        ])
+        _c(
+          "div",
+          { staticClass: "users-menu-display-type" },
+          [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.searchInput,
+                  expression: "searchInput"
+                }
+              ],
+              staticClass: "form-control mr-sm-1 users-menu-mb",
+              attrs: {
+                type: "search",
+                placeholder: "Search",
+                "aria-label": "Search"
+              },
+              domProps: { value: _vm.searchInput },
+              on: {
+                keyup: _vm.search,
+                blur: _vm.search,
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.searchInput = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("pagination", {
+              attrs: { data: _vm.users, "show-disabled": true, limit: 1 },
+              on: { "pagination-change-page": _vm.loadUsers }
+            })
+          ],
+          1
+        )
       ]),
       _vm._v(" "),
       _c(
