@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Helpers\Avatar;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Intervention\Image\Facades\Image;
 
 class RegisterController extends Controller
 {
@@ -65,16 +65,14 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $image = request()->avatar;
-        $avatarName = time() . strstr($image->getClientOriginalName(), '.');
-        Image::make($image)->fit(128, 128)->save(public_path('/uploads/avatars/').$avatarName);
-
+        $avatar = new Avatar();
+        $avatar->upload($data['avatar']);
 
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'avatar' => $avatarName,
+            'avatar' => $avatar->getName(),
         ]);
     }
 }
