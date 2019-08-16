@@ -1759,7 +1759,8 @@ __webpack_require__.r(__webpack_exports__);
       user: {},
       message: null,
       ifUploadingAvatar: false,
-      formMethod: ''
+      formMethod: '',
+      formVisualData: {}
     };
   },
   created: function created() {
@@ -1770,12 +1771,18 @@ __webpack_require__.r(__webpack_exports__);
       _this.message = null;
       _this.ifUploadingAvatar = false;
       _this.formMethod = 'update';
+      _this.formVisualData.title = 'Edit user';
+      _this.formVisualData.buttonText = 'Update';
     });
     _app_js__WEBPACK_IMPORTED_MODULE_0__["eventBus"].$on('ifCreating', function () {
-      _this.user = {};
+      _this.user = {
+        avatar: ''
+      };
       _this.message = null;
       _this.ifUploadingAvatar = false;
       _this.formMethod = 'create';
+      _this.formVisualData.title = 'Create user';
+      _this.formVisualData.buttonText = 'Create';
     });
   },
   methods: {
@@ -38708,7 +38715,18 @@ var render = function() {
     [
       _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
         _c("div", { staticClass: "modal-content" }, [
-          _vm._m(0),
+          _c("div", { staticClass: "modal-header" }, [
+            _c(
+              "h5",
+              {
+                staticClass: "modal-title",
+                attrs: { id: "exampleModalLabel" }
+              },
+              [_vm._v(_vm._s(_vm.formVisualData.title))]
+            ),
+            _vm._v(" "),
+            _vm._m(0)
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "modal-body" }, [
             _c(
@@ -38836,7 +38854,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("button", { staticClass: "btn btn-success" }, [
-                  _vm._v("Update")
+                  _vm._v(_vm._s(_vm.formVisualData.buttonText))
                 ])
               ]
             ),
@@ -38863,26 +38881,18 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c(
-        "h5",
-        { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
-        [_vm._v("Edit user")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
   }
 ]
 render._withStripped = true

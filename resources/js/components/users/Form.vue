@@ -4,7 +4,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit user</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">{{formVisualData.title}}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -38,7 +38,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="btn btn-success">Update</button>
+                        <button class="btn btn-success">{{formVisualData.buttonText}}</button>
                     </form>
                     <div v-if="message">
                         <pre>
@@ -62,7 +62,8 @@
                 user: {},
                 message: null,
                 ifUploadingAvatar: false,
-                formMethod: ''
+                formMethod: '',
+                formVisualData: {}
             };
         },
 
@@ -71,14 +72,18 @@
                 this.user = user;
                 this.message = null;
                 this.ifUploadingAvatar = false;
-                this.formMethod = 'update'
+                this.formMethod = 'update';
+                this.formVisualData.title = 'Edit user';
+                this.formVisualData.buttonText = 'Update';
             });
 
             eventBus.$on('ifCreating', () => {
-                this.user = {};
+                this.user = {avatar: ''};
                 this.message = null;
                 this.ifUploadingAvatar = false;
                 this.formMethod = 'create'
+                this.formVisualData.title = 'Create user';
+                this.formVisualData.buttonText = 'Create';
             });
         },
 
