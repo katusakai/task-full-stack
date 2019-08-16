@@ -1753,12 +1753,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['ifCreating'],
+  props: [],
   data: function data() {
     return {
       user: {},
       message: null,
-      uploadingAvatar: false
+      ifUploadingAvatar: false,
+      formMethod: ''
     };
   },
   created: function created() {
@@ -1767,6 +1768,14 @@ __webpack_require__.r(__webpack_exports__);
     _app_js__WEBPACK_IMPORTED_MODULE_0__["eventBus"].$on('selectUser', function (user) {
       _this.user = user;
       _this.message = null;
+      _this.ifUploadingAvatar = false;
+      _this.formMethod = 'update';
+    });
+    _app_js__WEBPACK_IMPORTED_MODULE_0__["eventBus"].$on('ifCreating', function () {
+      _this.user = {};
+      _this.message = null;
+      _this.ifUploadingAvatar = false;
+      _this.formMethod = 'create';
     });
   },
   methods: {
@@ -1774,14 +1783,19 @@ __webpack_require__.r(__webpack_exports__);
       e.preventDefault();
       var currentObj = this;
 
-      if (this.ifCreating) {
-        this.createUser(currentObj);
-      } else {
-        if (this.uploadingAvatar) {
-          this.updateWithAvatar(currentObj);
-        } else {
-          this.updateWithoutAvatar(currentObj);
-        }
+      switch (this.formMethod) {
+        case "create":
+          this.createUser(currentObj);
+          break;
+
+        case "update":
+          if (this.ifUploadingAvatar) {
+            this.updateWithAvatar(currentObj);
+          } else {
+            this.updateWithoutAvatar(currentObj);
+          }
+
+          break;
       }
 
       this.updateUser();
@@ -1803,7 +1817,7 @@ __webpack_require__.r(__webpack_exports__);
       };
 
       reader.readAsDataURL(file);
-      this.uploadingAvatar = !this.uploadingAvatar;
+      this.ifUploadingAvatar = !this.ifUploadingAvatar;
     },
     updateWithAvatar: function updateWithAvatar(currentObj) {
       axios.put('/users/' + this.user.id, {
@@ -1853,6 +1867,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _app_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../app.js */ "./resources/js/app.js");
 //
 //
 //
@@ -1887,6 +1902,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1916,7 +1932,7 @@ __webpack_require__.r(__webpack_exports__);
       this.user = this.$root.$emit('selectUser');
     },
     userCreateForm: function userCreateForm() {
-      this.ifCreating = !this.ifCreating;
+      _app_js__WEBPACK_IMPORTED_MODULE_0__["eventBus"].$emit('ifCreating');
     }
   }
 });

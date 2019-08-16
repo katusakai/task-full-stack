@@ -33,6 +33,7 @@
 </template>
 
 <script>
+    import {eventBus} from "../../app.js";
     export default {
         data: function() {
             return {
@@ -58,14 +59,13 @@
                     })
             },
 
-
             selectUser() {
                 this.user = this.$root.$emit('selectUser')
             },
 
             userCreateForm() {
-                this.ifCreating = !this.ifCreating;
-            }
+                eventBus.$emit('ifCreating')
+            },
         }
     }
 </script>

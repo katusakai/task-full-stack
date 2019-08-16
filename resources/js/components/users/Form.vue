@@ -55,14 +55,14 @@
     import {eventBus} from "../../app.js";
     export default {
         props: [
-            'ifCreating',
         ],
 
         data() {
             return {
                 user: {},
                 message: null,
-                uploadingAvatar: false,
+                ifUploadingAvatar: false,
+                formMethod: ''
             };
         },
 
@@ -70,6 +70,15 @@
             eventBus.$on('selectUser', (user) => {
                 this.user = user;
                 this.message = null;
+                this.ifUploadingAvatar = false;
+                this.formMethod = 'update'
+            });
+
+            eventBus.$on('ifCreating', () => {
+                this.user = {};
+                this.message = null;
+                this.ifUploadingAvatar = false;
+                this.formMethod = 'create'
             });
         },
 
@@ -77,15 +86,20 @@
             formSubmit(e) {
                 e.preventDefault();
                 let currentObj = this;
-                if (this.ifCreating) {
-                    this.createUser(currentObj);
-                } else {
-                    if(this.uploadingAvatar) {
-                        this.updateWithAvatar(currentObj);
-                    } else {
-                        this.updateWithoutAvatar(currentObj);
-                    }
+
+                switch (this.formMethod) {
+                    case "create":
+                        this.createUser(currentObj);
+                        break;
+                    case "update":
+                        if(this.ifUploadingAvatar) {
+                            this.updateWithAvatar(currentObj);
+                        } else {
+                            this.updateWithoutAvatar(currentObj);
+                        }
+                        break;
                 }
+
                 this.updateUser();
             },
 
@@ -107,7 +121,7 @@
                     vm.user.avatar = e.target.result;
                 };
                 reader.readAsDataURL(file);
-                this.uploadingAvatar = !this.uploadingAvatar;
+                this.ifUploadingAvatar = !this.ifUploadingAvatar;
             },
 
             updateWithAvatar(currentObj) {
@@ -153,6 +167,5 @@
                     });
             }
         }
-
     }
 </script>

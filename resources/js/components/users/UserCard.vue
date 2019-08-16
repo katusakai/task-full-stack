@@ -56,7 +56,6 @@
         },
 
         methods: {
-
             selectUser() {
                 eventBus.$emit('selectUser', this.user)
             },
