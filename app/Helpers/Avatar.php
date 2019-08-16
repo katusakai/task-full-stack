@@ -22,7 +22,7 @@ class Avatar
     public function upload($request)
     {
         $image = $request;
-        $this->name = time() . Str::random(10) . '.jpg';
+        $this->name = time() . Str::random(10) . '.png';
         Image::make($image)->fit(128, 128)->save(public_path('/uploads/avatars/').$this->name);
     }
 
