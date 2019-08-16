@@ -19,3 +19,5 @@ Route::get('/users', 'UserController@index')->name('user.index');
 Route::post('/users', 'UserController@store')->name('users.store');
 Route::put('/users/{user}', 'UserController@update')->name('user.update');
 Route::delete('/users/{user}', 'UserController@destroy')->name('user.destroy');
+
+Route::post('/users/random', 'UserController@storeRandom')->name('users.store.random');

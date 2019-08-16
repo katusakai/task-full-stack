@@ -1915,7 +1915,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       users: {},
       page: 1,
-      ifCreating: false
+      ifCreating: false,
+      randomUser: {}
     };
   },
   mounted: function mounted() {
@@ -1940,6 +1941,13 @@ __webpack_require__.r(__webpack_exports__);
     },
     userCreateForm: function userCreateForm() {
       _app_js__WEBPACK_IMPORTED_MODULE_0__["eventBus"].$emit('ifCreating');
+    },
+    createRandomUser: function createRandomUser() {
+      if (confirm('Do you want to create a random user?')) {
+        axios.post('/users/random');
+        this.loadUsers(this.page);
+        alert('Random user was created');
+      }
     }
   }
 });
@@ -38921,9 +38929,14 @@ var render = function() {
     [
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-md-2" }, [
-          _c("button", { staticClass: "btn btn-secondary" }, [
-            _vm._v("Random")
-          ]),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-secondary",
+              on: { click: _vm.createRandomUser }
+            },
+            [_vm._v("Random")]
+          ),
           _vm._v(" "),
           _c(
             "button",
@@ -38970,7 +38983,7 @@ var render = function() {
         0
       ),
       _vm._v(" "),
-      _c("user-form", { attrs: { ifCreating: _vm.ifCreating } })
+      _c("user-form")
     ],
     1
   )

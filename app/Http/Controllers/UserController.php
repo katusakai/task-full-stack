@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Aggregators\Users;
+use App\Api\RandomUserJsonPlaceHolderApi;
 use App\Helpers\Avatar;
 use App\User;
 use App\Validations\UserValidation;
@@ -122,5 +123,22 @@ class UserController extends Controller
     public function destroy($user)
     {
         User::destroy($user);
+    }
+
+    public function storeRandom()
+    {
+        $randomUser = new RandomUserJsonPlaceHolderApi();
+        $user = new User();
+        $user->name = $randomUser->getName();
+        $user->email = $randomUser->getEmail();
+        $password = Str::random(15);
+        $user->password = Hash::make($password);
+        $user->avatar = 'https://via.placeholder.com/128';
+
+        $user->save();
+
+        $responseText = "User was created. Password is: $password";
+
+        return response()->json(['success' => $responseText], 200);
     }
 }

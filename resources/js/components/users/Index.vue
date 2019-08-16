@@ -2,7 +2,9 @@
     <div>
         <div class="row">
             <div class="col-md-2">
-                <button class="btn btn-secondary">Random</button>
+                <button class="btn btn-secondary"
+                    @click="createRandomUser"
+                >Random</button>
                 <button class="btn btn-warning" data-toggle="modal" data-target="#userFormModal"
                     @click="userCreateForm"
                 >Create</button>
@@ -26,9 +28,7 @@
                 ></user-card>
             </div>
         </div>
-        <user-form
-            :ifCreating="ifCreating"
-        ></user-form>
+        <user-form></user-form>
     </div>
 </template>
 
@@ -39,7 +39,8 @@
             return {
                 users: {},
                 page: 1,
-                ifCreating: false
+                ifCreating: false,
+                randomUser: {}
             }
         },
 
@@ -66,6 +67,14 @@
             userCreateForm() {
                 eventBus.$emit('ifCreating')
             },
+
+            createRandomUser() {
+                if (confirm('Do you want to create a random user?')) {
+                    axios.post('/users/random');
+                    this.loadUsers(this.page);
+                    alert('Random user was created');
+                }
+            }
         }
     }
 </script>
