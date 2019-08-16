@@ -9,9 +9,12 @@ use App\Helpers\UrlParser;
 
 class Users
 {
-    public function get($limit)
+    public function get($limit, $search)
     {
-        $users =  User::orderBy('created_at', 'desc')->paginate($limit);
+        $users =  User::where('name', 'like', '%' . $search .'%')
+            ->orWhere('email', 'like', '%' . $search .'%')
+            ->orderBy('created_at', 'desc')
+            ->paginate($limit);
 
         foreach ($users->items() as $key => $user) {
             $this->aggregate($user);

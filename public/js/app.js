@@ -1909,6 +1909,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -1916,7 +1918,8 @@ __webpack_require__.r(__webpack_exports__);
       users: {},
       page: 1,
       ifCreating: false,
-      randomUser: {}
+      randomUser: {},
+      searchInput: ''
     };
   },
   mounted: function mounted() {
@@ -1931,7 +1934,7 @@ __webpack_require__.r(__webpack_exports__);
     loadUsers: function loadUsers(page) {
       var _this2 = this;
 
-      axios.get('/users' + '?page=' + page).then(function (response) {
+      axios.get('/users/' + '%' + this.searchInput + '?page=' + page).then(function (response) {
         _this2.users = response.data.users;
         _this2.page = page;
       });
@@ -1948,6 +1951,9 @@ __webpack_require__.r(__webpack_exports__);
         this.loadUsers(this.page);
         alert('Random user was created');
       }
+    },
+    search: function search() {
+      this.loadUsers(this.page);
     }
   }
 });
@@ -38952,7 +38958,35 @@ var render = function() {
           )
         ]),
         _vm._v(" "),
-        _vm._m(0),
+        _c("div", { staticClass: "col-md-3" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.searchInput,
+                expression: "searchInput"
+              }
+            ],
+            staticClass: "form-control mr-sm-1",
+            attrs: {
+              type: "search",
+              placeholder: "Search",
+              "aria-label": "Search"
+            },
+            domProps: { value: _vm.searchInput },
+            on: {
+              keyup: _vm.search,
+              blur: _vm.search,
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.searchInput = $event.target.value
+              }
+            }
+          })
+        ]),
         _vm._v(" "),
         _c("div", { staticClass: "col-md-7" }, [
           _c(
@@ -38988,34 +39022,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-3" }, [
-      _c("form", { staticClass: "form-inline" }, [
-        _c("input", {
-          staticClass: "form-control mr-sm-1",
-          attrs: {
-            type: "search",
-            placeholder: "Search",
-            "aria-label": "Search"
-          }
-        }),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-outline-success my-2 my-sm-0",
-            attrs: { type: "submit" }
-          },
-          [_vm._v("Search")]
-        )
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

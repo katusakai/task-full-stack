@@ -10,10 +10,12 @@
                 >Create</button>
             </div>
             <div class="col-md-3">
-                <form class="form-inline">
-                    <input class="form-control mr-sm-1" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                </form>
+                <input class="form-control mr-sm-1" type="search" placeholder="Search" aria-label="Search"
+                    v-model="searchInput"
+                    @keyup="search"
+                    @blur="search"
+
+                >
             </div>
             <div class="col-md-7">
                 <div class="table-responsive d-flex justify-content-center">
@@ -40,7 +42,8 @@
                 users: {},
                 page: 1,
                 ifCreating: false,
-                randomUser: {}
+                randomUser: {},
+                searchInput: ''
             }
         },
 
@@ -53,7 +56,7 @@
 
         methods: {
             loadUsers(page) {
-                axios.get('/users' + '?page=' + page)
+                axios.get('/users/' + '%' + this.searchInput + '?page=' + page)
                     .then(response => {
                         this.users = response.data.users;
                         this.page = page;
@@ -74,6 +77,10 @@
                     this.loadUsers(this.page);
                     alert('Random user was created');
                 }
+            },
+
+            search() {
+                this.loadUsers(this.page);
             }
         }
     }

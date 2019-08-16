@@ -18,9 +18,9 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Users $users)
+    public function index(Users $users, $search)
     {
-        $users = $users->get(15);
+        $users = $users->get(15, $search);
         return response()->json(compact('users'));
     }
 
