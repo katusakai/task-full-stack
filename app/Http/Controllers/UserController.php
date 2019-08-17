@@ -43,6 +43,7 @@ class UserController extends Controller
     public function store(Request $request, UserValidation $userValidation)
     {
         $request->validate($userValidation->text());
+        $request->validate($userValidation->image());
 
         $user = new User();
         $user->name = $request->name;
@@ -103,6 +104,7 @@ class UserController extends Controller
 
         if($request->avatar)
         {
+            $request->validate($userValidation->image());
             $avatar = new Avatar();
             $avatar->upload($request->avatar);
             $userToUpdate->avatar = $avatar->getName();
