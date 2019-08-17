@@ -30,10 +30,15 @@
                         <div class="form-group row">
                             <label for="form-avatar" class="col-sm-3 col-form-label">Avatar:</label>
                             <div class="col-sm-9">
-                                <input name="avatar" id="form-avatar" type="file"
-                                    v-on:change="onAvatarChange"
-                                >
-                                <div v-if="user.avatar">
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input name="avatar" type="file" class="custom-file-input" id="form-avatar"
+                                               v-on:change="onAvatarChange"
+                                        >
+                                        <label class="custom-file-label" for="form-avatar">{{formVisualData.fileName ? formVisualData.fileName : 'Choose file'}}</label>
+                                    </div>
+                                </div>
+                                <div v-if="user.avatar" class="pt-2">
                                     <img :src="user.avatar" class="img-responsive" height="128" width="128">
                                 </div>
                             </div>
@@ -117,6 +122,8 @@
                 if (!files.length)
                     return;
                 this.createAvatar(files[0]);
+
+                this.changeFileInputLabel();
             },
 
             createAvatar(file) {
@@ -168,6 +175,15 @@
                     .catch(function (error) {
                         currentObj.message = error;
                     });
+            },
+
+            changeFileInputLabel() {
+                let fileInput = document.getElementById('form-avatar');
+                let fileName = fileInput.files[0].name;
+                if(fileName.length > 18) {
+                    fileName = fileName.slice(fileName.length - 18);
+                }
+                this.formVisualData.fileName = fileName;
             }
         }
     }

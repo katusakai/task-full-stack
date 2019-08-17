@@ -10700,6 +10700,10 @@ a.text-dark:focus {
   background-color: #ebffeb;
 }
 
+.custom-file-label {
+  border-color: #70db70;
+}
+
 .users-menu-display-type {
   display: flex;
   width: 100%;
