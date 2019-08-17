@@ -137,11 +137,9 @@
                 })
                     .then(function (response) {
                         currentObj.message = response.data.success;
-                        console.log(response.data.success);
                     })
                     .catch(function (error) {
                         currentObj.message = error;
-                        console.log(error);
                     });
             },
 
@@ -162,7 +160,7 @@
                 axios.post('/users/', {
                     name: this.user.name,
                     email: this.user.email,
-                    avatar: this.user.avatar,
+                    avatar: this.user.avatar
                 })
                     .then(function (response) {
                         currentObj.message = response.data.success;

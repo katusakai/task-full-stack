@@ -1833,10 +1833,8 @@ __webpack_require__.r(__webpack_exports__);
         avatar: this.user.avatar
       }).then(function (response) {
         currentObj.message = response.data.success;
-        console.log(response.data.success);
       })["catch"](function (error) {
         currentObj.message = error;
-        console.log(error);
       });
     },
     updateWithoutAvatar: function updateWithoutAvatar(currentObj) {
@@ -1920,7 +1918,6 @@ __webpack_require__.r(__webpack_exports__);
     return {
       users: {},
       page: 1,
-      ifCreating: false,
       randomUser: {},
       searchInput: ''
     };
