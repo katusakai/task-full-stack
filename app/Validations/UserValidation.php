@@ -15,4 +15,13 @@ class UserValidation
 
         return $validatedData;
     }
+
+    public function image() : array
+    {
+        $validatedData = [
+            'avatar' => 'required',
+        ];
+
+        return $validatedData;
+    }
 }

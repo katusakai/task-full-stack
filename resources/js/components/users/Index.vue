@@ -44,7 +44,6 @@
             return {
                 users: {},
                 page: 1,
-                ifCreating: false,
                 randomUser: {},
                 searchInput: ''
             }

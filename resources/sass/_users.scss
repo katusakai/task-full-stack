@@ -15,6 +15,13 @@ $small-breakpoint: 290px;
   @media (max-width: $small-breakpoint) {
     display: block;
   }
+  a {
+    text-decoration: none;
+    color: $dark-green;
+  }
+  a:hover {
+    font-weight: bold;
+  }
 }
 
 .user-card-text {

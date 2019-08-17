@@ -13,3 +13,23 @@ $users-menu-break-point: 575px;
     margin-bottom: 10px;
   }
 }
+
+.form-control {
+  border-color: $border-color;
+}
+
+.form-control:focus {
+  background-color: white;
+  border-color: $border-color;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(173, 235, 173, 0.75);
+}
+
+.page-item.active .page-link {
+  background-color: green;
+}
+
+.page-link {
+  color: $dark-green;
+  border: 1px solid $border-color;
+}

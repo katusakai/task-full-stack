@@ -1751,6 +1751,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: [],
@@ -1814,6 +1819,7 @@ __webpack_require__.r(__webpack_exports__);
       var files = e.target.files || e.dataTransfer.files;
       if (!files.length) return;
       this.createAvatar(files[0]);
+      this.changeFileInputLabel();
     },
     createAvatar: function createAvatar(file) {
       var reader = new FileReader();
@@ -1833,10 +1839,8 @@ __webpack_require__.r(__webpack_exports__);
         avatar: this.user.avatar
       }).then(function (response) {
         currentObj.message = response.data.success;
-        console.log(response.data.success);
       })["catch"](function (error) {
         currentObj.message = error;
-        console.log(error);
       });
     },
     updateWithoutAvatar: function updateWithoutAvatar(currentObj) {
@@ -1859,6 +1863,16 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         currentObj.message = error;
       });
+    },
+    changeFileInputLabel: function changeFileInputLabel() {
+      var fileInput = document.getElementById('form-avatar');
+      var fileName = fileInput.files[0].name;
+
+      if (fileName.length > 18) {
+        fileName = fileName.slice(fileName.length - 18);
+      }
+
+      this.formVisualData.fileName = fileName;
     }
   }
 });
@@ -1920,7 +1934,6 @@ __webpack_require__.r(__webpack_exports__);
     return {
       users: {},
       page: 1,
-      ifCreating: false,
       randomUser: {},
       searchInput: ''
     };
@@ -38846,17 +38859,39 @@ var render = function() {
                   ),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-sm-9" }, [
-                    _c("input", {
-                      attrs: {
-                        name: "avatar",
-                        id: "form-avatar",
-                        type: "file"
-                      },
-                      on: { change: _vm.onAvatarChange }
-                    }),
+                    _c("div", { staticClass: "input-group" }, [
+                      _c("div", { staticClass: "custom-file" }, [
+                        _c("input", {
+                          staticClass: "custom-file-input",
+                          attrs: {
+                            name: "avatar",
+                            type: "file",
+                            id: "form-avatar"
+                          },
+                          on: { change: _vm.onAvatarChange }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            staticClass: "custom-file-label",
+                            attrs: { for: "form-avatar" }
+                          },
+                          [
+                            _vm._v(
+                              _vm._s(
+                                _vm.formVisualData.fileName
+                                  ? _vm.formVisualData.fileName
+                                  : "Choose file"
+                              )
+                            )
+                          ]
+                        )
+                      ])
+                    ]),
                     _vm._v(" "),
                     _vm.user.avatar
-                      ? _c("div", [
+                      ? _c("div", { staticClass: "pt-2" }, [
                           _c("img", {
                             staticClass: "img-responsive",
                             attrs: {
