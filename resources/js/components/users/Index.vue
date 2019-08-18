@@ -13,9 +13,8 @@
             </div>
             <div class="users-menu-display-type">
                 <input class="form-control mr-sm-1 users-menu-mb" type="search" placeholder="Search" aria-label="Search"
-                       v-model="searchInput"
-                       @keyup="search"
-                       @blur="search"
+                       v-model="searchQuery"
+                       @input="isTyping = true"
 
                 >
                 <pagination
@@ -45,7 +44,8 @@
                 users: {},
                 page: 1,
                 randomUser: {},
-                searchInput: ''
+                searchQuery: '',
+                isTyping: false
             }
         },
 
@@ -58,7 +58,7 @@
 
         methods: {
             loadUsers(page) {
-                axios.get('/users/' + '%' + this.searchInput + '?page=' + page)
+                axios.get('/users/' + '%' + this.searchQuery + '?page=' + page)
                     .then(response => {
                         this.users = response.data.users;
                         this.page = page;
@@ -80,10 +80,17 @@
                     alert('Random user was created');
                 }
             },
+        },
 
-            search() {
-                this.loadUsers();
+        watch: {
+            searchQuery: _.debounce(function() {
+                this.isTyping = false;
+            }, 1000),
+            isTyping: function(value) {
+                if (!value) {
+                    this.loadUsers();
+                }
             }
-        }
+        },
     }
 </script>
