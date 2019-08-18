@@ -1927,7 +1927,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -1935,7 +1934,8 @@ __webpack_require__.r(__webpack_exports__);
       users: {},
       page: 1,
       randomUser: {},
-      searchInput: ''
+      searchQuery: '',
+      isTyping: false
     };
   },
   mounted: function mounted() {
@@ -1950,7 +1950,7 @@ __webpack_require__.r(__webpack_exports__);
     loadUsers: function loadUsers(page) {
       var _this2 = this;
 
-      axios.get('/users/' + '%' + this.searchInput + '?page=' + page).then(function (response) {
+      axios.get('/users/' + '%' + this.searchQuery + '?page=' + page).then(function (response) {
         _this2.users = response.data.users;
         _this2.page = page;
       });
@@ -1967,9 +1967,16 @@ __webpack_require__.r(__webpack_exports__);
         this.loadUsers(this.page);
         alert('Random user was created');
       }
-    },
-    search: function search() {
-      this.loadUsers();
+    }
+  },
+  watch: {
+    searchQuery: _.debounce(function () {
+      this.isTyping = false;
+    }, 1000),
+    isTyping: function isTyping(value) {
+      if (!value) {
+        this.loadUsers();
+      }
     }
   }
 });
@@ -39007,8 +39014,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.searchInput,
-                  expression: "searchInput"
+                  value: _vm.searchQuery,
+                  expression: "searchQuery"
                 }
               ],
               staticClass: "form-control mr-sm-1 users-menu-mb",
@@ -39017,16 +39024,19 @@ var render = function() {
                 placeholder: "Search",
                 "aria-label": "Search"
               },
-              domProps: { value: _vm.searchInput },
+              domProps: { value: _vm.searchQuery },
               on: {
-                keyup: _vm.search,
-                blur: _vm.search,
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+                input: [
+                  function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.searchQuery = $event.target.value
+                  },
+                  function($event) {
+                    _vm.isTyping = true
                   }
-                  _vm.searchInput = $event.target.value
-                }
+                ]
               }
             }),
             _vm._v(" "),
